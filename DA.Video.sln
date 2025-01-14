@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "vue-tutorial", "vue-tutorial\vue-tutorial.esproj", "{D7D28F4E-3D0B-4816-85C9-D9F97A480E9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DA.Video.WebAPI", "DA.Video.WebAPI\DA.Video.WebAPI.csproj", "{526A0E05-2F3B-4F91-9B26-4357E53C34C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{D7D28F4E-3D0B-4816-85C9-D9F97A480E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7D28F4E-3D0B-4816-85C9-D9F97A480E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7D28F4E-3D0B-4816-85C9-D9F97A480E9B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{526A0E05-2F3B-4F91-9B26-4357E53C34C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{526A0E05-2F3B-4F91-9B26-4357E53C34C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{526A0E05-2F3B-4F91-9B26-4357E53C34C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{526A0E05-2F3B-4F91-9B26-4357E53C34C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

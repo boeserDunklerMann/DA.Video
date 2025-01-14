@@ -37,3 +37,6 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## See also
+https://vuejs.de/artikel/vuejs-tutorial-deutsch-anfaenger/
