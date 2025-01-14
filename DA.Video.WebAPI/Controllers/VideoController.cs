@@ -1,17 +1,30 @@
 ﻿using DA.Video.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DA.Video.WebAPI.Controllers
 {
 	/// <ChangeLog>
-		/// <Create Datum="14.01.2025" Entwickler="DA" />
-		/// </ChangeLog>
+	/// <Create Datum="14.01.2025" Entwickler="DA" />
+	/// <Change Datum="14.01.2025" Entwickler="DA">EF stuff added</Change>	
+	/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class VideoController(IConfiguration configuration, ILogger<VideoController> logger) : ControllerBase
+	public class VideoController : ControllerBase, IDisposable
 	{
+		private VideoContext context;
+		private readonly IConfiguration configuration;
+		private readonly ILogger logger;
+
+		public VideoController(IConfiguration cfg, ILogger<VideoController> log)
+		{
+			configuration = cfg;
+			logger = log;
+			context = new(configuration["ConnectionStrings:da-video-db"]!);
+		}
+
 		// GET: api/<ValuesController>
 		/// <summary>
 		/// Lists all videos
@@ -29,14 +42,14 @@ namespace DA.Video.WebAPI.Controllers
 				logger.LogInformation($"pattern: {searchPattern}");
 				IEnumerable<string> files = Directory.EnumerateFileSystemEntries(searchpath, searchPattern, SearchOption.TopDirectoryOnly);
 				var fArr = files.ToArray();
-				for (int i = 0; i<fArr.Length; i++)
+				for (int i = 0; i < fArr.Length; i++)
 				{
 					string fullpath = fArr[i];
 					fArr[i] = Path.GetFileName(fullpath);
 				}
 				return fArr;
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				logger.LogError($"Exception was thrown {e.Message}");
 				throw;
@@ -49,12 +62,13 @@ namespace DA.Video.WebAPI.Controllers
 		/// </summary>
 		/// https://andre-nas.servebeer.com/videoApi/api/Video/pornhub_720_03.mp4
 		[HttpGet("{id}")]
-		public VideoEntry Get(string id)
+		public async Task<VideoEntry> GetAsync(string id)
 		{
-			VideoEntry entry = new() { ID=id};
-			string previewBaseUrl = configuration["VideoSettings:PreviewBaseUrl"]!;
-			entry.PreviewFile = previewBaseUrl + id + configuration["VideoSettings:PreviewExtension"]!;
-			// TODO DA: fetch Title and Tags from DB
+			//VideoEntry entry = new() { ID = id };
+			//string previewBaseUrl = configuration["VideoSettings:PreviewBaseUrl"]!;
+			//entry.PreviewFile = previewBaseUrl + id + configuration["VideoSettings:PreviewExtension"]!;
+			// DONE DA: fetch Title and Tags from DB
+			VideoEntry? entry = await context.Videos.Include("Tags").FirstOrDefaultAsync(v=>v.ID == id);
 
 			logger.LogInformation(entry.ToString());
 			return entry;
@@ -76,6 +90,15 @@ namespace DA.Video.WebAPI.Controllers
 		[HttpDelete("{id}")]
 		public void Delete(int id)
 		{
+		}
+
+		public void Dispose()
+		{
+			if (context != null)
+			{
+				context.Dispose();
+				context = null;
+			}
 		}
 	}
 }
