@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace DA.Video.Model
 {
@@ -20,10 +21,17 @@ namespace DA.Video.Model
 		/// relative path to preview gif-file
 		/// </summary>
 		public string PreviewFile { get; set; } = "";
-		public List<string> Tags { get; set; } = [];
+		public ICollection<VideoTag> Tags { get; set; } = [];
 		public override string ToString()
 		{
 			return JsonSerializer.Serialize(this);
 		}
+	}
+
+	public class VideoTag
+	{
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int ID { get; set; }
+		public string Tag { get; set; } = "";
 	}
 }

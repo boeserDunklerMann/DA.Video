@@ -20,9 +20,14 @@ namespace DA.Video.Model
 			// TODO DA: add/modify entity-definitions here
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/one-to-many
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/many-to-many <--- das ist das Richtige!
+			modelBuilder.Entity<VideoTag>(tag =>
+			{
+				tag.HasKey(t => t.ID);
+			});
 			modelBuilder.Entity<VideoEntry>(ventry =>
 			{
 				ventry.HasKey(ve => ve.ID);
+				ventry.HasMany(ve=> ve.Tags);
 			});
 			/*
 					modelBuilder.Entity<User>(user =>

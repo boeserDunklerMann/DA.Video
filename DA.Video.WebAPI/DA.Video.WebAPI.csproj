@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DA.Video.Model\DA.Video.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="DA.Video.WebApi.service">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
