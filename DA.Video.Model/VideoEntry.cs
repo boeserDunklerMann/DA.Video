@@ -1,13 +1,14 @@
 ﻿using System.Text.Json;
 
-namespace DA.Video.WebAPI
+namespace DA.Video.Model
 {
 	/// <ChangeLog>
-		/// <Create Datum="14.01.2025" Entwickler="DA" />
-		/// </ChangeLog>
-		/// <summary>
-		/// POCO class for a video
-		/// </summary>
+	/// <Create Datum="14.01.2025" Entwickler="DA" />
+	/// <Change Datum="14.01.2025" Entwickler="DA">class moved to Model-library</Change>
+	/// </ChangeLog>
+	/// <summary>
+	/// POCO class for a video
+	/// </summary>
 	public class VideoEntry
 	{
 		/// <summary>
