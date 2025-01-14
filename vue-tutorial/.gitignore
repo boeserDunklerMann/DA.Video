@@ -1,6 +1,3 @@
-# windows downloads
-*.msi
-
 # Logs
 logs
 *.log
