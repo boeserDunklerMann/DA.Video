@@ -9,20 +9,23 @@ namespace DA.Video.WebAPI.Controllers
 	/// <ChangeLog>
 	/// <Create Datum="14.01.2025" Entwickler="DA" />
 	/// <Change Datum="14.01.2025" Entwickler="DA">EF stuff added</Change>	
+	/// <Change Datum="15.01.2025" Entwickler="DA">DI stuff added</Change>
 	/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class VideoController : ControllerBase, IDisposable
+	public class VideoController : ControllerBase
 	{
-		private VideoContext context;
+		private IDbContext context;
 		private readonly IConfiguration configuration;
 		private readonly ILogger logger;
 
-		public VideoController(IConfiguration cfg, ILogger<VideoController> log)
+		public VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db)
 		{
 			configuration = cfg;
 			logger = log;
-			context = new(configuration["ConnectionStrings:da-video-db"]!);
+			//context = new();
+			context = db;
+			context.ConnectionString = configuration["ConnectionStrings:da-video-db"]!;
 		}
 
 		// GET: api/<ValuesController>
@@ -90,15 +93,6 @@ namespace DA.Video.WebAPI.Controllers
 		[HttpDelete("{id}")]
 		public void Delete(int id)
 		{
-		}
-
-		public void Dispose()
-		{
-			if (context != null)
-			{
-				context.Dispose();
-				context = null;
-			}
 		}
 	}
 }

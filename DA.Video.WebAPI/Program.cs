@@ -1,7 +1,12 @@
+using DA.Video.Model;
 
 namespace DA.Video.WebAPI
 {
-    public class Program
+	/// <ChangeLog>
+	/// <Create Datum="14.01.2025" Entwickler="DA" />
+	/// <Change Datum="15.01.2025" Entwickler="DA">DI stuff added</Change>    
+	/// </ChangeLog>
+	public class Program
     {
         public static void Main(string[] args)
         {
@@ -14,6 +19,8 @@ namespace DA.Video.WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IDbContext, VideoContext>();
 
             var app = builder.Build();
 
