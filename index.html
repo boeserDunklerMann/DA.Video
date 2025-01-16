@@ -3,12 +3,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>The special Video Gallery</title>
 	<script src="video.js"></script>
+	<style>
+		div.thumb
+		{ 
+			width: 100px;
+			float: left;
+			margin-bottom: 3mm;
+			margin-right: 1mm;
+		}
+		label.vidTitle
+		{
+			font-family: sans-serif;
+			font-size: smaller;			
+			font-weight: bold;
+		}
+	</style>
 </head>
 <body onload="loadVideos">
 <div id="output">
+<div class="thumb"><a href="play.php?fname=p360 (1) (1).mp4"><img src="preview/p360 (1) (1).mp4.gif"></a><label class="vidTitle">Titel</label></div>
 </div>
 <script>
-loadVideos();
+	loadAllVideos();
 </script>
 </table>
 </body>

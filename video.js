@@ -1,34 +1,23 @@
-// document.getElementById('loaddata').addEventListener('click', function()
- //{
-	 /*
-	const xhr = new XMLHttpRequest();
-	xhr.open("GET", "https://andre-nas.servebeer.com/videoApi/api/Video/", true);
-	output = document.getElementById("output");
-	xhr.onload = function()
+
+function loadAllVideos()
+{
+	var requestOptions = 
 	{
-		if (xhr.status==200)
-		{
-			output.innerHTML=xhr.responseText;
-		}
-		else
-		{
-			console.error("Failed to load data");
-		}
+		method: 'GET',
+		redirect: 'follow'
 	};
-	xhr.send();
-	*/
-	function loadVideos()
+	output = document.getElementById("output");
+	output.innerHTML="";
+	
+	fetch("https://andre-nas.servebeer.com/videoApi/api/Video/", requestOptions)
+	.then(response => response.text())
+	.then(result => 
 	{
-		output = document.getElementById("output");
-		fetch("https://andre-nas.servebeer.com/videoApi/api/Video/")
-			.then(response => response.json())
-			.then(data => {
-				// data is Array of String
-				data.sort();
-				data.forEach((v)=>{
-					output.innerHTML += "<a href='play.php?fname="+v+"'><img src='preview/"+v+".gif' /></a>\n";
-				});
-			})
-			.catch(error=>console.error("Failed to load", error));
-	}
- //});
+		videos = JSON.parse(result);
+		videos.forEach(v => 
+		{
+			output.innerHTML += "<div class='thumb'><a href='play.php?fname="+v.id+"'><img src='preview/"+v.previewFile+"' /><br/><label class='vidTitle'>"+v.title+"</label></a></div>\n";
+		});
+	})
+	.catch(error => console.log('error', error));
+}
