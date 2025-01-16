@@ -15,7 +15,7 @@
 	1. get tags by videoID **done**
 	2. get all Tags **done**
 		1. filtered/unfiltered **done**
-	3. make it REST**ful**
+	3. make it REST**ful** **done**
 
 ### Frontend
 
