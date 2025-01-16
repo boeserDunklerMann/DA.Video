@@ -21,10 +21,16 @@ namespace DA.Video.WebAPI.Controllers
 			return await context.Tags.ToListAsync();
 		}
 
-		[HttpGet("{videoId}")]
+		[HttpGet("byVideo/{videoId}")]
 		public async Task<IEnumerable<VideoTag>> GetVideoTagsByVideoAsync(string videoId)
 		{
 			return await context.Videos.Include(nameof(IDbContext.Tags)).Where(v => v.ID == videoId).SelectMany(v => v.Tags).ToListAsync();
+		}
+
+		[HttpGet("byText/{filterText}")]
+		public async Task<IEnumerable<VideoTag>> GetVideoTagsByFilterAsync(string filterText)
+		{
+			return await context.Tags.Where(vt => vt.Tag.IndexOf(filterText, StringComparison.OrdinalIgnoreCase) >= 0).ToListAsync();
 		}
 	}
 }

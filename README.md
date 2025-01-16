@@ -2,12 +2,15 @@
 ## TODO
 ### WebApi
 
-1. WebApi first load from DB then scan direcory
-1. return VideoEntry object from WebApi
+1. modify VideoController
+	1. WebApi first load from DB then scan direcory
+	1. return VideoEntry object from WebApi
+	3. filter videos by tag-string
+
 3. create Tags-Controller **done**
 	1. get tags by videoID **done**
 	2. get all Tags **done**
-		1. filtered/unfiltered
+		1. filtered/unfiltered **done**
 
 ### Frontend
 
