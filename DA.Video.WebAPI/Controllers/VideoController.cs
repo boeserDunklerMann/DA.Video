@@ -15,17 +15,8 @@ namespace DA.Video.WebAPI.Controllers
 	[ApiController]
 	public class VideoController : ControllerBase
 	{
-		private IDbContext context;
-		private readonly IConfiguration configuration;
-		private readonly ILogger logger;
-
-		public VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db)
+		public VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : base(cfg, log, db)
 		{
-			configuration = cfg;
-			logger = log;
-			//context = new();
-			context = db;
-			context.ConnectionString = configuration["ConnectionStrings:da-video-db"]!;
 		}
 
 		// GET: api/<ValuesController>
@@ -73,7 +64,7 @@ namespace DA.Video.WebAPI.Controllers
 			// DONE DA: fetch Title and Tags from DB
 			VideoEntry? entry = await context.Videos.Include("Tags").FirstOrDefaultAsync(v=>v.ID == id);
 
-			logger.LogInformation(entry.ToString());
+			logger.LogInformation(entry?.ToString());
 			return entry;
 		}
 

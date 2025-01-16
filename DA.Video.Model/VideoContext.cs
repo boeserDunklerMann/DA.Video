@@ -5,6 +5,7 @@ namespace DA.Video.Model
 	/// <ChangeLog>
 	/// <Create Datum="14.01.2025" Entwickler="DA" />
 	/// <Change Datum="15.01.2025" Entwickler="DA">IDbContext created</Change>
+	/// <Change Datum="16.01.2025" Entwickler="DA">prop Tags added</Change>
 	/// </ChangeLog>
 	public class VideoContext : DbContext, IDbContext
 	{
