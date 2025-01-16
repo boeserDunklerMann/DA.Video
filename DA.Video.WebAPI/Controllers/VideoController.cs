@@ -100,6 +100,7 @@ namespace DA.Video.WebAPI.Controllers
 				throw new ObjectNotFoundException(nameof(VideoEntry), videoEntry.ID);
 			vFromDb.Title = videoEntry.Title;
 			vFromDb.PreviewFile = videoEntry.PreviewFile;
+			vFromDb.Tags = videoEntry.Tags;
 			await db.SaveAsync();
 			return Ok();
 		}

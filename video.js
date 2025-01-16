@@ -1,3 +1,11 @@
+class VideoTag
+{
+	constructor(id, tag)
+	{
+		this.id=id;
+		this.tag=tag;
+	}
+}
 class VideoEntry
 {
 	constructor(id, title, previewFile, tags)
@@ -51,14 +59,16 @@ function showVideoData(videoId)
 			currentVideo=data;
 			txtID.value = currentVideo.id;
 			txtTitle.value=currentVideo.title;
-			txtTags.value=currentVideo.tags.join(' ');
+			txtTags.value="";
+			currentVideo.tags.forEach(t=>txtTags.value += t.tag + " ");
 		})
 		.catch(error => console.log('error', error));
+
 	document.getElementById("btnSubmit").addEventListener("click", function()
 	{
-		// TODO DA: send data to webApi
-		console.log(currentVideo);
-
+		jsonbody = JSON.stringify(currentVideo);
+		console.log(jsonbody);
+		
 		var requestOptions = 
 		{
 			method: 'PUT',
@@ -67,7 +77,7 @@ function showVideoData(videoId)
 			{
 			'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(currentVideo)
+			body: jsonbody
 		};
 		fetch("https://andre-nas.servebeer.com/videoApi/api/Video/", requestOptions)
 			.catch(error => console.log('error', error));
@@ -76,11 +86,14 @@ function showVideoData(videoId)
 	txtTitle.addEventListener("input", function()
 	{
 		currentVideo.title=txtTitle.value;
-		console.log(currentVideo);
 	});
 	txtTags.addEventListener("input", function()
 	{
-		currentVideo.tags=txtTags.value.split(" ");
+		currentVideo.tags=[];
+		txtTags.value.split(" ").forEach(t =>
+		{
+			currentVideo.tags.push(new VideoTag(0, t));
+		})
 		console.log(currentVideo);
 	})
 }
