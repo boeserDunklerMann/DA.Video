@@ -9,7 +9,7 @@
 	4. make it REST**ful**
 		1. POST
 		2. PUT
-		3. DELETE
+		3. DELETE ***not needed***
 	
 3. create Tags-Controller **done**
 	1. get tags by videoID **done**
