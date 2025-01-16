@@ -10,23 +10,23 @@ namespace DA.Video.WebAPI.Controllers
 	/// <Create Datum="14.01.2025" Entwickler="DA" />
 	/// <Change Datum="14.01.2025" Entwickler="DA">EF stuff added</Change>	
 	/// <Change Datum="15.01.2025" Entwickler="DA">DI stuff added</Change>
-	/// </ChangeLog>
+	/// <Change Datum="16.01.2025" Entwickler="DA">first load db then scan directory</Change>
+		/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class VideoController : ControllerBase
+	public class VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : ControllerBase(cfg, log, db)
 	{
-		public VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : base(cfg, log, db)
-		{
-		}
-
 		// GET: api/<ValuesController>
 		/// <summary>
 		/// Lists all videos
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public async Task<IEnumerable<VideoEntry>> GetAllAsync()
 		{
+			// first load vids from db
+			var videos = await context.Videos.Include(nameof(IDbContext.Tags)).ToListAsync();
+
 			// try enumerate files in Video-dir
 			try
 			{
@@ -35,19 +35,30 @@ namespace DA.Video.WebAPI.Controllers
 				string searchPattern = configuration["VideoSettings:VideoFileSearchPattern"]!;
 				logger.LogInformation($"pattern: {searchPattern}");
 				IEnumerable<string> files = Directory.EnumerateFileSystemEntries(searchpath, searchPattern, SearchOption.TopDirectoryOnly);
-				var fArr = files.ToArray();
-				for (int i = 0; i < fArr.Length; i++)
+				bool itemAdded = false;
+				foreach ( string file in files )
 				{
-					string fullpath = fArr[i];
-					fArr[i] = Path.GetFileName(fullpath);
+					string filename = Path.GetFileName(file);
+					if (!videos.Any(v => v.ID.Equals(filename)))
+					{
+						VideoEntry v = new()
+						{
+							ID = filename,
+							PreviewFile = $"{filename}.gif"
+						};
+						videos.Add(v);
+						await context.Videos.AddAsync(v);
+						itemAdded = true;
+					}
 				}
-				return fArr;
+				if (itemAdded) await context.SaveAsync();
 			}
 			catch (Exception e)
 			{
 				logger.LogError($"Exception was thrown {e.Message}");
 				throw;
 			}
+			return videos;
 		}
 
 		// GET api/<ValuesController>/5
@@ -65,7 +76,7 @@ namespace DA.Video.WebAPI.Controllers
 			VideoEntry? entry = await context.Videos.Include("Tags").FirstOrDefaultAsync(v=>v.ID == id);
 
 			logger.LogInformation(entry?.ToString());
-			return entry;
+			return entry!;
 		}
 
 		// POST api/<ValuesController>

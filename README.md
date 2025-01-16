@@ -3,7 +3,7 @@
 ### WebApi
 
 1. modify VideoController
-	1. WebApi first load from DB then scan direcory
+	1. WebApi first load from DB then scan direcory **done**
 	1. return VideoEntry object from WebApi **done**
 	3. filter videos by tag-string
 
