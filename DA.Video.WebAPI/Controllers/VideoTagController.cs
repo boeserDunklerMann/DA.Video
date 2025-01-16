@@ -9,12 +9,8 @@ namespace DA.Video.WebAPI.Controllers
 	/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
-	public class VideoTagController : ControllerBase
+	public class VideoTagController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : ControllerBase(cfg, log, db)
 	{
-		public VideoTagController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : base(cfg, log, db)
-		{
-		}
-
 		[HttpGet]
 		public async Task<IEnumerable<VideoTag>> GetAllVideoTagsAsync()
 		{
