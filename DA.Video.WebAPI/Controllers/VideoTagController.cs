@@ -1,5 +1,4 @@
 ﻿using DA.Video.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +19,12 @@ namespace DA.Video.WebAPI.Controllers
 		public async Task<IEnumerable<VideoTag>> GetAllVideoTagsAsync()
 		{
 			return await context.Tags.ToListAsync();
+		}
+
+		[HttpGet("{videoId}")]
+		public async Task<IEnumerable<VideoTag>> GetVideoTagsByVideoAsync(string videoId)
+		{
+			return await context.Videos.Include(nameof(IDbContext.Tags)).Where(v => v.ID == videoId).SelectMany(v => v.Tags).ToListAsync();
 		}
 	}
 }
