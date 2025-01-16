@@ -21,3 +21,8 @@ function loadAllVideos()
 	})
 	.catch(error => console.log('error', error));
 }
+
+function showVideoData(videoId)
+{
+	
+}

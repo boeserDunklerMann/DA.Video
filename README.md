@@ -6,11 +6,13 @@
 	1. WebApi first load from DB then scan direcory **done**
 	1. return VideoEntry object from WebApi **done**
 	3. filter videos by tag-string
-
+	4. make it REST**ful**
+	
 3. create Tags-Controller **done**
 	1. get tags by videoID **done**
 	2. get all Tags **done**
 		1. filtered/unfiltered **done**
+	3. make it REST**ful**
 
 ### Frontend
 
