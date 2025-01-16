@@ -1,7 +1,14 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
 	<script src="video.js"></script>
+	<style>
+		input:read-only,
+		textarea:read-only {
+			background-color: silver;
+		}
+</style>
 </head>
 <body>
 <video id="my-video"
@@ -19,7 +26,14 @@
 	</p>
 </video>
 <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
-<div id="videotextdata"></div>
+
+<div id="videotextdata">
+<label>ID:<input type="text" id="txtID" readonly /></label><br/>
+<label>Title:<input type="text" id="txtTitle"/></label><br />
+<label for="txtTags">Tags:</label><textarea id="txtTags"></textarea>
+<button id="btnSubmit">OK</button>
+</div>
+
 <script>
 showVideoData('<?php print ($_GET["fname"]);?>');
 </script>
