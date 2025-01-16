@@ -67,7 +67,6 @@ namespace DA.Video.WebAPI.Controllers
 		/// <summary>
 		/// gets video details by filename
 		/// </summary>
-		/// https://andre-nas.servebeer.com/videoApi/api/Video/pornhub_720_03.mp4
 		[HttpGet("{id}")]
 		public async Task<VideoEntry> GetAsync(string id)
 		{
