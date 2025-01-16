@@ -11,5 +11,6 @@ namespace DA.Video.Model
 		DbSet<VideoEntry> Videos { get; set; }
 		DbSet<VideoTag> Tags { get; set; }
 		string ConnectionString { get; set; }
+		Task SaveAsync();
 	}
 }

@@ -37,5 +37,9 @@ namespace DA.Video.Model
 				vtag.HasKey(vt => vt.ID);
 			});
 		}
+		public async Task SaveAsync()
+		{
+			await SaveChangesAsync();
+		}
 	}
 }
