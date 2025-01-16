@@ -30,7 +30,7 @@
 <div id="videotextdata">
 <label>ID:<input type="text" id="txtID" readonly /></label><br/>
 <label>Title:<input type="text" id="txtTitle"/></label><br />
-<label for="txtTags">Tags:</label><textarea id="txtTags"></textarea>
+<label for="txtTags">Tags:</label><textarea readonly id="txtTags"></textarea>
 <button id="btnSubmit">OK</button>
 </div>
 

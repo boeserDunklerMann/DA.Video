@@ -1,4 +1,5 @@
 ﻿using DA.Video.Model;
+using DA.Video.WebAPI.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -96,7 +97,7 @@ namespace DA.Video.WebAPI.Controllers
 		{
 			VideoEntry? vFromDb = await context.Videos.FirstOrDefaultAsync(v => v.ID.Equals(videoEntry.ID));
 			if (vFromDb == null)
-				throw new Exception($"VideoID {videoEntry.ID} not found");
+				throw new ObjectNotFoundException(nameof(VideoEntry), videoEntry.ID);
 			vFromDb.Title = videoEntry.Title;
 			vFromDb.PreviewFile = videoEntry.PreviewFile;
 			await context.SaveAsync();

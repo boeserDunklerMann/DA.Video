@@ -61,7 +61,7 @@ function showVideoData(videoId)
 
 		var requestOptions = 
 		{
-			method: 'POST',
+			method: 'PUT',
 			redirect: 'follow',
 			headers:
 			{
