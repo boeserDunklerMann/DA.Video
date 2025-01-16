@@ -6,7 +6,7 @@
 	/// <summary>
 	/// Will be thrown if an object cannot be found
 	/// </summary>
-	public class ObjectNotFoundException(string entityName, string? id) : Exception
+	public class ObjectNotFoundException(string entityName, object? id) : Exception
 	{
 		public override string ToString()
 		{

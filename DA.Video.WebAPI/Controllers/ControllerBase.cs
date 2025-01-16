@@ -4,8 +4,9 @@ using DA.Video.Model;
 namespace DA.Video.WebAPI.Controllers
 {
 	/// <ChangeLog>
-		/// <Create Datum="16.01.2025" Entwickler="DA" />
-		/// </ChangeLog>
+	/// <Create Datum="16.01.2025" Entwickler="DA" />
+	/// <Change Datum="16.01.2025" Entwickler="DA">context renamed to db</Change>
+	/// </ChangeLog>
 	public class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 	{
 		protected IDbContext db;
