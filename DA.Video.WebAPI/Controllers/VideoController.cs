@@ -11,7 +11,8 @@ namespace DA.Video.WebAPI.Controllers
 	/// <Change Datum="14.01.2025" Entwickler="DA">EF stuff added</Change>	
 	/// <Change Datum="15.01.2025" Entwickler="DA">DI stuff added</Change>
 	/// <Change Datum="16.01.2025" Entwickler="DA">first load db then scan directory</Change>
-		/// </ChangeLog>
+	/// <Change Datum="16.01.2025" Entwickler="DA">Post and Put added</Change>
+	/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : ControllerBase(cfg, log, db)
@@ -36,7 +37,7 @@ namespace DA.Video.WebAPI.Controllers
 				logger.LogInformation($"pattern: {searchPattern}");
 				IEnumerable<string> files = Directory.EnumerateFileSystemEntries(searchpath, searchPattern, SearchOption.TopDirectoryOnly);
 				bool itemAdded = false;
-				foreach ( string file in files )
+				foreach (string file in files)
 				{
 					string filename = Path.GetFileName(file);
 					if (!videos.Any(v => v.ID.Equals(filename)))
@@ -73,7 +74,7 @@ namespace DA.Video.WebAPI.Controllers
 			//string previewBaseUrl = configuration["VideoSettings:PreviewBaseUrl"]!;
 			//entry.PreviewFile = previewBaseUrl + id + configuration["VideoSettings:PreviewExtension"]!;
 			// DONE DA: fetch Title and Tags from DB
-			VideoEntry? entry = await context.Videos.Include("Tags").FirstOrDefaultAsync(v=>v.ID == id);
+			VideoEntry? entry = await context.Videos.Include("Tags").FirstOrDefaultAsync(v => v.ID == id);
 
 			logger.LogInformation(entry?.ToString());
 			return entry!;
@@ -81,20 +82,25 @@ namespace DA.Video.WebAPI.Controllers
 
 		// POST api/<ValuesController>
 		[HttpPost]
-		public void Post([FromBody] string value)
+		public async Task<IActionResult> CreateVideoEntry([FromBody] VideoEntry videoEntry)
 		{
+			context.Videos.Add(videoEntry);
+			await context.SaveAsync();
+			return Ok();
+
 		}
 
 		// PUT api/<ValuesController>/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
+		[HttpPut()]
+		public async Task<IActionResult> UpdateVideoEntry([FromBody] VideoEntry videoEntry)
 		{
-		}
-
-		// DELETE api/<ValuesController>/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
+			VideoEntry? vFromDb = await context.Videos.FirstOrDefaultAsync(v => v.ID.Equals(videoEntry.ID));
+			if (vFromDb == null)
+				throw new Exception($"VideoID {videoEntry.ID} not found");
+			vFromDb.Title = videoEntry.Title;
+			vFromDb.PreviewFile = videoEntry.PreviewFile;
+			await context.SaveAsync();
+			return Ok();
 		}
 	}
 }

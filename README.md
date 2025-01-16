@@ -7,8 +7,8 @@
 	1. return VideoEntry object from WebApi **done**
 	3. filter videos by tag-string
 	4. make it REST**ful**
-		1. POST
-		2. PUT
+		1. POST **done**
+		2. PUT **done**
 		3. DELETE ***not needed***
 	
 3. create Tags-Controller **done**
