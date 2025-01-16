@@ -2,11 +2,12 @@ using DA.Video.Model;
 
 namespace DA.Video.WebAPI
 {
-	/// <ChangeLog>
-	/// <Create Datum="14.01.2025" Entwickler="DA" />
-	/// <Change Datum="15.01.2025" Entwickler="DA">DI stuff added</Change>    
-	/// </ChangeLog>
-	public class Program
+    /// <ChangeLog>
+    /// <Create Datum="14.01.2025" Entwickler="DA" />
+    /// <Change Datum="15.01.2025" Entwickler="DA">DI stuff added</Change>    
+    /// <Change Datum="16.01.2025" Entwickler="DA">DI bindings in separate method</Change>
+    /// </ChangeLog>
+    public class Program
     {
         public static void Main(string[] args)
         {
@@ -15,12 +16,12 @@ namespace DA.Video.WebAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
-			builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there is the connstring which will not be committed to git
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
+            builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);    // there is the connstring which will not be committed to git
+                                                                                            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IDbContext, VideoContext>();
+            CreateDIBindings(builder);
 
             var app = builder.Build();
 
@@ -37,6 +38,16 @@ namespace DA.Video.WebAPI
             app.MapControllers();
 
             app.Run();
+        }
+
+        /// <ChangeLog>
+        /// <Create Datum="16.01.2025" Entwickler="DA" />
+        /// </ChangeLog>
+        private static void CreateDIBindings(WebApplicationBuilder? builder)
+        {
+            if (builder == null)
+                throw new NullReferenceException(nameof(builder));
+            builder.Services.AddScoped<IDbContext, VideoContext>();
         }
     }
 }
