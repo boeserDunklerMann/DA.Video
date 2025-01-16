@@ -8,15 +8,15 @@ namespace DA.Video.WebAPI.Controllers
 		/// </ChangeLog>
 	public class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 	{
-		protected IDbContext context;
+		protected IDbContext db;
 		protected readonly IConfiguration configuration;
 		protected readonly ILogger logger;
 		public ControllerBase(IConfiguration cfg, ILogger<VideoController> log, IDbContext db)
 		{
 			configuration = cfg;
 			logger = log;
-			context = db;
-			context.ConnectionString = configuration["ConnectionStrings:da-video-db"]!;
+			this.db = db;
+			this.db.ConnectionString = configuration["ConnectionStrings:da-video-db"]!;
 		}
 	}
 }

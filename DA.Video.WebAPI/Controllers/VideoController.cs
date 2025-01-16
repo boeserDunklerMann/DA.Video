@@ -27,7 +27,7 @@ namespace DA.Video.WebAPI.Controllers
 		public async Task<IEnumerable<VideoEntry>> GetAllAsync()
 		{
 			// first load vids from db
-			var videos = await context.Videos.Include(nameof(IDbContext.Tags)).ToListAsync();
+			var videos = await db.Videos.Include(nameof(IDbContext.Tags)).ToListAsync();
 
 			// try enumerate files in Video-dir
 			try
@@ -49,11 +49,11 @@ namespace DA.Video.WebAPI.Controllers
 							PreviewFile = $"{filename}.gif"
 						};
 						videos.Add(v);
-						await context.Videos.AddAsync(v);
+						await db.Videos.AddAsync(v);
 						itemAdded = true;
 					}
 				}
-				if (itemAdded) await context.SaveAsync();
+				if (itemAdded) await db.SaveAsync();
 			}
 			catch (Exception e)
 			{
@@ -74,7 +74,7 @@ namespace DA.Video.WebAPI.Controllers
 			//string previewBaseUrl = configuration["VideoSettings:PreviewBaseUrl"]!;
 			//entry.PreviewFile = previewBaseUrl + id + configuration["VideoSettings:PreviewExtension"]!;
 			// DONE DA: fetch Title and Tags from DB
-			VideoEntry? entry = await context.Videos.Include("Tags").FirstOrDefaultAsync(v => v.ID == id);
+			VideoEntry? entry = await db.Videos.Include("Tags").FirstOrDefaultAsync(v => v.ID == id);
 
 			logger.LogInformation(entry?.ToString());
 			return entry!;
@@ -84,8 +84,8 @@ namespace DA.Video.WebAPI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateVideoEntry([FromBody] VideoEntry videoEntry)
 		{
-			context.Videos.Add(videoEntry);
-			await context.SaveAsync();
+			db.Videos.Add(videoEntry);
+			await db.SaveAsync();
 			return Ok();
 
 		}
@@ -94,12 +94,12 @@ namespace DA.Video.WebAPI.Controllers
 		[HttpPut()]
 		public async Task<IActionResult> UpdateVideoEntry([FromBody] VideoEntry videoEntry)
 		{
-			VideoEntry? vFromDb = await context.Videos.FirstOrDefaultAsync(v => v.ID.Equals(videoEntry.ID));
+			VideoEntry? vFromDb = await db.Videos.FirstOrDefaultAsync(v => v.ID.Equals(videoEntry.ID));
 			if (vFromDb == null)
 				throw new ObjectNotFoundException(nameof(VideoEntry), videoEntry.ID);
 			vFromDb.Title = videoEntry.Title;
 			vFromDb.PreviewFile = videoEntry.PreviewFile;
-			await context.SaveAsync();
+			await db.SaveAsync();
 			return Ok();
 		}
 	}
