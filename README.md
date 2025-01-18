@@ -16,5 +16,6 @@
 1. View vid. title under thumbnail **done**
 2. View title and tags in play-page **done**
 4. modify title and tags **done**
-5. search by tag done
+5. search by tag **done**
+>>>>>>> 728762a54542afd5eec6f8e4f868112029a26f89
 3. Open player as div, not separate page
