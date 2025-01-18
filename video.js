@@ -18,7 +18,7 @@ class VideoEntry
 }
 var currentVideo = new VideoEntry();
 
-function loadAllVideos()
+function loadVideos(url)
 {
 	var requestOptions = 
 	{
@@ -27,18 +27,25 @@ function loadAllVideos()
 	};
 	output = document.getElementById("output");
 	output.innerHTML="";
+	count = 0;
 	
-	fetch("https://andre-nas.servebeer.com/videoApi/api/Video/", requestOptions)
+	fetch(url, requestOptions)
 	.then(response => response.text())
 	.then(result => 
 	{
 		videos = JSON.parse(result);
 		videos.forEach(v => 
 		{
+			count++;
 			output.innerHTML += "<div class='thumb'><a href='play.php?fname="+v.id+"'><img src='preview/"+v.previewFile+"' /><br/><label class='vidTitle'>"+v.title+"</label></a></div>\n";
 		});
 	})
 	.catch(error => console.log('error', error));
+	return count;
+}
+function loadAllVideos()
+{
+	loadVideos("https://andre-nas.servebeer.com/videoApi/api/Video/");
 }
 
 function showVideoData(videoId)
@@ -51,7 +58,7 @@ function showVideoData(videoId)
 	txtID=document.getElementById("txtID");
 	txtTitle=document.getElementById("txtTitle");
 	txtTags= document.getElementById("txtTags");
-	
+
 	fetch("https://andre-nas.servebeer.com/videoApi/api/Video/"+videoId, requestOptions)
 		.then(response=>response.json())
 		.then(data =>{
@@ -59,8 +66,7 @@ function showVideoData(videoId)
 			currentVideo=data;
 			txtID.value = currentVideo.id;
 			txtTitle.value=currentVideo.title;
-			txtTags.value="";
-			currentVideo.tags.forEach(t=>txtTags.value += t.tag + " ");
+			txtTags.value=currentVideo.tags;
 		})
 		.catch(error => console.log('error', error));
 
@@ -89,11 +95,18 @@ function showVideoData(videoId)
 	});
 	txtTags.addEventListener("input", function()
 	{
-		currentVideo.tags=[];
-		txtTags.value.split(" ").forEach(t =>
-		{
-			currentVideo.tags.push(new VideoTag(0, t));
-		})
+		currentVideo.tags=txtTags.value;
 		console.log(currentVideo);
-	})
+	});
+}
+
+function search()
+{
+	txtSearch = document.getElementById("txtSearch");
+	output = document.getElementById("output");
+	output.innerHTML="";
+	
+	searchurl = "https://andre-nas.servebeer.com/videoApi/api/Video/byTag/"+encodeURIComponent(txtSearch.value);
+	console.log(searchurl);
+	loadVideos(searchurl);
 }

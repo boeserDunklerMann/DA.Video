@@ -9,7 +9,6 @@ namespace DA.Video.Model
 	public interface IDbContext
 	{
 		DbSet<VideoEntry> Videos { get; set; }
-		DbSet<VideoTag> Tags { get; set; }
 		string ConnectionString { get; set; }
 		Task SaveAsync();
 	}

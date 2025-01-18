@@ -1,6 +1,7 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<title>The special Video Gallery</title>
 	<script src="video.js"></script>
 	<style>
@@ -11,6 +12,11 @@
 			margin-bottom: 3mm;
 			margin-right: 1mm;
 		}
+		div.searchbox
+		{
+			width: 4cm;
+			float: none;
+		}
 		label.vidTitle
 		{
 			font-family: sans-serif;
@@ -20,6 +26,11 @@
 	</style>
 </head>
 <body>
+<div id=searchbox" class="searchbox">
+	<label>search by tag:<input type="text" id="txtSearch" /></label>
+	<button id="btnSearch" onclick="search()">OK</button>
+	<button id="btnReset" onclick="loadAllVideos()">Reset</button>
+</div>
 <div id="output">
 </div>
 <script>

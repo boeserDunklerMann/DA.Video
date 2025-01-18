@@ -6,10 +6,11 @@ namespace DA.Video.Model
 	/// <ChangeLog>
 	/// <Create Datum="14.01.2025" Entwickler="DA" />
 	/// <Change Datum="14.01.2025" Entwickler="DA">class moved to Model-library</Change>
-	/// </ChangeLog>
-	/// <summary>
-	/// POCO class for a video
-	/// </summary>
+	/// <Change Datum="18.01.2025" Entwickler="DA">class VideoTag removed</Change>
+		/// </ChangeLog>
+		/// <summary>
+		/// POCO class for a video
+		/// </summary>
 	public class VideoEntry
 	{
 		/// <summary>
@@ -21,17 +22,13 @@ namespace DA.Video.Model
 		/// relative path to preview gif-file
 		/// </summary>
 		public string PreviewFile { get; set; } = "";
-		public ICollection<VideoTag> Tags { get; set; } = [];
+		/// <summary>
+		/// space-separated list of tag-strings
+		/// </summary>
+		public string Tags { get; set; } = "";
 		public override string ToString()
 		{
 			return JsonSerializer.Serialize(this);
 		}
-	}
-
-	public class VideoTag
-	{
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int ID { get; set; }
-		public string Tag { get; set; } = "";
 	}
 }

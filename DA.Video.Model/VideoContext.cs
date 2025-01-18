@@ -10,7 +10,6 @@ namespace DA.Video.Model
 	public class VideoContext : DbContext, IDbContext
 	{
 		public DbSet<VideoEntry> Videos { get; set; }
-		public DbSet<VideoTag> Tags { get; set; }
 		public string ConnectionString { get; set; } = "";
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -23,18 +22,9 @@ namespace DA.Video.Model
 			base.OnModelCreating(modelBuilder);
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/one-to-many
 			// https://learn.microsoft.com/de-de/ef/core/modeling/relationships/many-to-many <--- das ist das Richtige!
-			modelBuilder.Entity<VideoTag>(tag =>
-			{
-				tag.HasKey(t => t.ID);
-			});
 			modelBuilder.Entity<VideoEntry>(ventry =>
 			{
 				ventry.HasKey(ve => ve.ID);
-				ventry.HasMany(ve => ve.Tags);
-			});
-			modelBuilder.Entity<VideoTag>(vtag =>
-			{
-				vtag.HasKey(vt => vt.ID);
 			});
 		}
 		public async Task SaveAsync()

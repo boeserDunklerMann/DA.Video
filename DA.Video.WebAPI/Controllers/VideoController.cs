@@ -14,7 +14,8 @@ namespace DA.Video.WebAPI.Controllers
 	/// <Change Datum="16.01.2025" Entwickler="DA">first load db then scan directory</Change>
 	/// <Change Datum="16.01.2025" Entwickler="DA">Post and Put added</Change>
 	/// <Change Datum="16.01.2025" Entwickler="DA">context renamed to db</Change>
-	/// </ChangeLog>
+	/// <Change Datum="18.01.2025" Entwickler="DA">search videos by Tag</Change>
+		/// </ChangeLog>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class VideoController(IConfiguration cfg, ILogger<VideoController> log, IDbContext db) : ControllerBase(cfg, log, db)
@@ -28,7 +29,7 @@ namespace DA.Video.WebAPI.Controllers
 		public async Task<IEnumerable<VideoEntry>> GetAllAsync()
 		{
 			// first load vids from db
-			var videos = await db.Videos.Include(nameof(IDbContext.Tags)).ToListAsync();
+			var videos = await db.Videos.ToListAsync();
 
 			// try enumerate files in Video-dir
 			try
@@ -66,19 +67,21 @@ namespace DA.Video.WebAPI.Controllers
 
 		// GET api/<ValuesController>/5
 		/// <summary>
-		/// gets video details by filename
+		/// gets video details by id (filename)
 		/// </summary>
 		[HttpGet("{id}")]
 		public async Task<VideoEntry> GetAsync(string id)
 		{
-			//VideoEntry entry = new() { ID = id };
-			//string previewBaseUrl = configuration["VideoSettings:PreviewBaseUrl"]!;
-			//entry.PreviewFile = previewBaseUrl + id + configuration["VideoSettings:PreviewExtension"]!;
-			// DONE DA: fetch Title and Tags from DB
-			VideoEntry? entry = await db.Videos.Include("Tags").FirstOrDefaultAsync(v => v.ID == id);
+			VideoEntry? entry = await db.Videos.FirstOrDefaultAsync(v => v.ID == id);
 
 			logger.LogInformation(entry?.ToString());
 			return entry!;
+		}
+
+		[HttpGet("byTag/{tagsSearch}")]
+		public async Task<IEnumerable<VideoEntry>> GetVideosByTagAsync(string tagsSearch)
+		{
+			return await db.Videos.Where(v => v.Tags.Contains(tagsSearch, StringComparison.OrdinalIgnoreCase)).ToListAsync();
 		}
 
 		// POST api/<ValuesController>
@@ -95,9 +98,7 @@ namespace DA.Video.WebAPI.Controllers
 		[HttpPut()]
 		public async Task<IActionResult> UpdateVideoEntry([FromBody] VideoEntry videoEntry)
 		{
-			VideoEntry? vFromDb = await db.Videos.FirstOrDefaultAsync(v => v.ID.Equals(videoEntry.ID));
-			if (vFromDb == null)
-				throw new ObjectNotFoundException(nameof(VideoEntry), videoEntry.ID);
+			VideoEntry? vFromDb = await db.Videos.FirstOrDefaultAsync(v => v.ID.Equals(videoEntry.ID)) ?? throw new ObjectNotFoundException(nameof(VideoEntry), videoEntry.ID);
 			vFromDb.Title = videoEntry.Title;
 			vFromDb.PreviewFile = videoEntry.PreviewFile;
 			vFromDb.Tags = videoEntry.Tags;

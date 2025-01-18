@@ -11,15 +11,10 @@
 		2. PUT **done**
 		3. DELETE ***not needed***
 	
-3. create Tags-Controller **done**
-	1. get tags by videoID **done**
-	2. get all Tags **done**
-		1. filtered/unfiltered **done**
-	3. make it REST**ful** **done**
-
 ### Frontend
 
 1. View vid. title under thumbnail **done**
 2. View title and tags in play-page **done**
 4. modify title and tags **done**
+5. search by tag
 3. Open player as div, not separate page
