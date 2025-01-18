@@ -21,5 +21,5 @@
 
 1. View vid. title under thumbnail **done**
 2. View title and tags in play-page **done**
-4. **modify title and tags**
+4. modify title and tags **done**
 3. Open player as div, not separate page
